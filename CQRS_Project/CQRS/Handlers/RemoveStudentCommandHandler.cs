@@ -1,9 +1,12 @@
 ﻿using CQRS_Project.CQRS.Commands;
 using CQRS_Project.Data;
+using MediatR;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace CQRS_Project.CQRS.Handlers
 {
-    public class RemoveStudentCommandHandler
+    public class RemoveStudentCommandHandler : IRequestHandler<RemoveStudentCommand>
     {
         private readonly StudentContext _studentContext;
 
@@ -12,11 +15,23 @@ namespace CQRS_Project.CQRS.Handlers
             _studentContext = studentContext;
         }
 
-        public void Handle(RemoveStudentCommand command) 
+        /// <summary>
+        /// Mediatr olmadan kullanılan yöntem
+        /// </summary>
+        /// 
+        //public void Handle(RemoveStudentCommand command) 
+        //{
+        //    var deleteStudent = _studentContext.Students.Find(command.Id);  
+        //    _studentContext.Students.Remove(deleteStudent);
+        //    _studentContext.SaveChanges();
+        //}
+
+        public async Task<Unit> Handle(RemoveStudentCommand request, CancellationToken cancellationToken)
         {
-            var deleteStudent = _studentContext.Students.Find(command.Id);  
+            var deleteStudent = await _studentContext.Students.FindAsync(request.Id);
             _studentContext.Students.Remove(deleteStudent);
             _studentContext.SaveChanges();
+            return Unit.Value;
         }
     }
 }

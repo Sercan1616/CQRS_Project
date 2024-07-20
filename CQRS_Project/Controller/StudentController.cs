@@ -13,7 +13,7 @@ namespace CQRS_Project.Controller
     public class StudentController : ControllerBase
     {
 
-
+        // MEDIATR KULLANMADAN ÖNCE TÜM HANDLER'LARI DI İLE ELE ALIYORDUK. BU KOD KALABALIĞINA SEBEP VERDİ.
         //private readonly GetStudentByIdQueryHandler _getStudentByIdHandler;
         //private readonly GetAllStudentQueryHandler _getAllStudentHandler;
         //private readonly CreateStudentCommandHandler _createStudentCommandHandler;
@@ -36,12 +36,12 @@ namespace CQRS_Project.Controller
             _mediator = mediator;
         }
 
-        //[HttpGet]
-        //public IActionResult GetAllStudent()
-        //{
-        //    var result = _getAllStudentHandler.Handle(new GetAllStudentQuery());
-        //    return Ok(result);
-        //}
+        [HttpGet]
+        public async Task<IActionResult> GetAllStudent()
+        {
+            var result = await _mediator.Send(new GetAllStudentQuery());
+            return Ok(result);
+        }
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetResult(int id)
@@ -50,26 +50,26 @@ namespace CQRS_Project.Controller
             return Ok(result);
         }
 
-        //[HttpPost]
-        //public IActionResult CreateStudent(CreateStudentCommand command)
-        //{
-        //    this._createStudentCommandHandler.Handle(command);
-        //    return Ok();
-        //}
+        [HttpPost]
+        public async Task<IActionResult> CreateStudent(CreateStudentCommand command)
+        {
+            await _mediator.Send(command);
+            return Ok();
+        }
 
-        //[HttpDelete("{id}")]
-        //public IActionResult RemoveStudent(int id)
-        //{
-        //    this._removeStudentCommandHandler.Handle(new RemoveStudentCommand(id));
-        //    return NoContent();
-        //}
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> RemoveStudent(int id)
+        {
+            await _mediator.Send(new RemoveStudentCommand(id));
+            return NoContent();
+        }
 
-        //[HttpPut]
-        //public IActionResult UpdateStudent(UpdateStudentCommand command)
-        //{
-        //    this._updateStudentCommandHandler.Handle(command);
-        //    return NoContent();
-        //}
+        [HttpPut]
+        public async Task<IActionResult> UpdateStudent(UpdateStudentCommand command)
+        {
+            await _mediator.Send(command);
+            return NoContent();
+        }
 
     }
 }
