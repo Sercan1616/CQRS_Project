@@ -1,5 +1,6 @@
 using CQRS_Project.CQRS.Handlers;
 using CQRS_Project.Data;
+using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -19,11 +20,16 @@ namespace CQRS_Project
                 opt.UseSqlServer("server=(localdb)\\mssqllocaldb; database=CQRS_Test_DB; integrated security=true;");
             });
 
-            services.AddScoped<GetStudentByIdQueryHandler>();
-            services.AddScoped<GetAllStudentQueryHandler>();
-            services.AddScoped<CreateStudentCommandHandler>();
-            services.AddScoped<RemoveStudentCommandHandler>();
-            services.AddScoped<UpdateStudentCommandHandler>();
+
+
+            services.AddMediatR(typeof(Startup));
+
+            /// MEDIATR DESING KULLANMAZSAK BU ÞEKÝLDE KULLANMAMIZ GEREKÝYOR
+            //services.AddScoped<GetStudentByIdQueryHandler>();
+            //services.AddScoped<GetAllStudentQueryHandler>();
+            //services.AddScoped<CreateStudentCommandHandler>();
+            //services.AddScoped<RemoveStudentCommandHandler>();
+            //services.AddScoped<UpdateStudentCommandHandler>();
 
             services.AddControllers().AddNewtonsoftJson(opt => opt.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
         }

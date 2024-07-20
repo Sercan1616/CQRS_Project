@@ -1,6 +1,9 @@
-﻿namespace CQRS_Project.CQRS.Queries
+﻿using CQRS_Project.CQRS.Results;
+using MediatR;
+
+namespace CQRS_Project.CQRS.Queries
 {
-    public class GetStudentByIdQuery
+    public class GetStudentByIdQuery : IRequest<GetStudentByIdQueryResult>
     {
         /// <summary>
         /// Sorgu için iletilecek Id 
